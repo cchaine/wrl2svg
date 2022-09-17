@@ -108,6 +108,15 @@ class Engine:
         faces[:, :, 0:1] += viewport.minx
         faces[:, :, 1:2] += viewport.miny
 
+        # Merge faces
+        # extract face lines
+        _lines = []
+        for face in faces:
+            face = np.around(face[:, :2], self.precision)
+            for i in range(len(face)-1):
+                _lines += [[face[i], face[i+1]]]
+            _lines += [[face[0], face[-1]]]
+
         # Compute the winding direction of each polygon.
         windings = np.zeros(faces.shape[0])
         if faces.shape[1] >= 3:
